@@ -11,6 +11,7 @@ public class BookStoreGUI extends JFrame {
     private JTextField bookIdField, bookNameField, authorNamesField, publicationField, dateOfPublicationField,
             priceOfBookField, totalQuantityField;
     private JTabbedPane tabbedPane = new JTabbedPane();
+
     Database db;
 
     public BookStoreGUI(Database db) {
@@ -86,14 +87,9 @@ public class BookStoreGUI extends JFrame {
 
     private void readBookGUI() {
         JPanel displayPanel = new JPanel(new BorderLayout());
-
-        if (db.booksCollection.size() != 0) {
-            for (Book curBook : db.booksCollection) {
-                displayPanel.add(new JLabel(curBook.toHTML()));
-            }
-        } else {
-            displayPanel.add(new JLabel("No data found"));
-        }
+        BookTableModel tableModel = new BookTableModel(db.booksCollection);
+        JTable table = new JTable(tableModel);
+        displayPanel.add(table);
 
         tabbedPane.addTab("Display Books", displayPanel);
     }

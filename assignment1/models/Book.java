@@ -3,14 +3,14 @@ package assignment1.models;
 import java.io.Serializable;
 
 public class Book implements Serializable {
-    int bookId;
-    String bookName;
-    String authorNames;
-    String publication;
-    String dateOfPublication;
-    double priceOfBook;
-    int totalQuantityToOrder;
-    double totalCost;
+    public int bookId;
+    public String bookName;
+    public String authorNames;
+    public String publication;
+    public String dateOfPublication;
+    public double priceOfBook;
+    public int totalQuantityToOrder;
+    public double totalCost;
     private static final long serialVersionUID = 6529685098267757690L;
 
     public Book() {
@@ -26,9 +26,5 @@ public class Book implements Serializable {
         this.priceOfBook = priceOfBook;
         this.totalQuantityToOrder = totalQuantityToOrder;
         this.totalCost = priceOfBook * totalQuantityToOrder;
-    }
-
-    public String toHTML() {
-        return "<html><p>Book ID: " + bookId + "<br />Book Name: " + bookName + "</p><hr /></html>";
     }
 }

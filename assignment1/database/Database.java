@@ -20,7 +20,7 @@ public class Database {
     }
 
     public void saveBook(Book newBook) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Books.dat", true))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Books.dat"))) {
             booksCollection.add(newBook);
             oos.writeObject(booksCollection);
             oos.close();
