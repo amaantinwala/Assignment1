@@ -18,7 +18,7 @@ public class BookStoreGUI extends JFrame {
         this.db = db;
 
         setTitle("Book Store");
-        setSize(400, 300);
+        setSize(900, 700);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -89,7 +89,8 @@ public class BookStoreGUI extends JFrame {
         JPanel displayPanel = new JPanel(new BorderLayout());
         BookTableModel tableModel = new BookTableModel(db.booksCollection);
         JTable table = new JTable(tableModel);
-        displayPanel.add(table);
+        JScrollPane tableScrollPane = new JScrollPane(table);
+        displayPanel.add(tableScrollPane);
 
         tabbedPane.addTab("Display Books", displayPanel);
     }
