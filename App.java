@@ -1,7 +1,6 @@
 import javax.swing.*;
 
 import assignment1.database.Database;
-// import assignment1.models.Book;
 import assignment1.views.*;;
 
 public class App {
