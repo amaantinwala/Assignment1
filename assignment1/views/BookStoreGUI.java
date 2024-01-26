@@ -3,7 +3,6 @@ package assignment1.views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import assignment1.database.Database;
