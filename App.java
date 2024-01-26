@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 import assignment1.database.Database;
-import assignment1.views.*;;
+import assignment1.views.*;
 
 public class App {
     public static void main(String[] args) {

@@ -11,6 +11,11 @@ public class BookTableModel extends AbstractTableModel {
     private String[] columnNames = { "ID", "Name", "Authors", "Publication", "Publication Date", "Price", "Quantity",
             "Total Cost" };
 
+    public void setData(List<Book> data) {
+        this.data = data;
+        fireTableChanged(null);
+    }
+
     public BookTableModel(List<Book> data) {
         this.data = data;
     }

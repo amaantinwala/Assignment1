@@ -3,13 +3,15 @@ package assignment1.views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import assignment1.database.Database;
 import assignment1.models.Book;
 
 public class BookStoreGUI extends JFrame {
     private JTextField bookIdField, bookNameField, authorNamesField, publicationField, dateOfPublicationField,
-            priceOfBookField, totalQuantityField;
+            priceOfBookField, totalQuantityField, searchField;
     private JTabbedPane tabbedPane = new JTabbedPane();
 
     Database db;
@@ -86,8 +88,27 @@ public class BookStoreGUI extends JFrame {
     }
 
     private void readBookGUI() {
-        JPanel displayPanel = new JPanel(new BorderLayout());
+        JPanel displayPanel = new JPanel(new GridLayout(4, 1));
+
+        searchField = new JTextField("Search for books 🔎");
+        searchField.setFont(searchField.getFont().deriveFont(Font.PLAIN, 35));
+        displayPanel.add(searchField);
+
         BookTableModel tableModel = new BookTableModel(db.booksCollection);
+
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(searchField.getText());
+                String searchString = searchField.getText().toLowerCase();
+                java.util.List<Book> filteredBooksCollection = db.booksCollection.stream()
+                        .filter(book -> book.matchesSearch(searchString)).collect(Collectors.toList());
+                tableModel.setData(filteredBooksCollection);
+            }
+        });
+        displayPanel.add(searchButton);
+
         JTable table = new JTable(tableModel);
         JScrollPane tableScrollPane = new JScrollPane(table);
         displayPanel.add(tableScrollPane);

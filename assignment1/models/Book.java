@@ -27,4 +27,11 @@ public class Book implements Serializable {
         this.totalQuantityToOrder = totalQuantityToOrder;
         this.totalCost = priceOfBook * totalQuantityToOrder;
     }
+
+    public boolean matchesSearch(String query) {
+        if (bookName.toLowerCase().contains(query))
+            return true;
+
+        return false;
+    }
 }
