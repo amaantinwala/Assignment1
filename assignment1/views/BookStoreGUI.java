@@ -109,6 +109,9 @@ public class BookStoreGUI extends JFrame {
         displayPanel.add(searchButton);
 
         JTable table = new JTable(tableModel);
+        table.getColumnModel().getColumn(8).setCellRenderer(new ButtonRenderer());
+        table.getColumnModel().getColumn(9).setCellRenderer(new ButtonRenderer());
+
         JScrollPane tableScrollPane = new JScrollPane(table);
         displayPanel.add(tableScrollPane);
 
