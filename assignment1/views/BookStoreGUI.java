@@ -3,6 +3,7 @@ package assignment1.views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+// import java.util.concurrent.Flow;
 import java.util.stream.Collectors;
 
 import assignment1.database.Database;
@@ -13,6 +14,7 @@ public class BookStoreGUI extends JFrame {
             priceOfBookField, totalQuantityField, searchField;
     private JTabbedPane tabbedPane = new JTabbedPane();
     private JTable table;
+    private JLabel bookIdLabel,bookNameLabel,authorNameLabel,publicationLabel,dateOfPublicationLabel,priceOfBookLabel,totalQuantityLabel; 
 
     BookTableModel tableModel;
     Database db;
@@ -24,7 +26,8 @@ public class BookStoreGUI extends JFrame {
         tableModel = new BookTableModel(db.booksCollection);
 
         setTitle("Book Store");
-        setSize(900, 700);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        // setUndecorated(true);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -38,37 +41,60 @@ public class BookStoreGUI extends JFrame {
     }
 
     private void createBookPanelGUI() {
-        JPanel createBookPanel = new JPanel(new GridLayout(8, 2));
+        JPanel createBookPanel = new JPanel(new GridLayout(9,2,10,10));
 
-        createBookPanel.add(new JLabel("Book ID:"));
+        bookIdLabel = new JLabel("Book ID:"); 
+        bookIdLabel.setFont(getFont().deriveFont(Font.BOLD,25));
+        createBookPanel.add(bookIdLabel);
         bookIdField = new JTextField();
+        bookIdField.setFont(getFont().deriveFont(Font.PLAIN, 25));
         createBookPanel.add(bookIdField);
 
-        createBookPanel.add(new JLabel("Book Name:"));
+        bookNameLabel = new JLabel("Book Name:"); 
+        bookNameLabel.setFont(getFont().deriveFont(Font.BOLD,25));
+        createBookPanel.add(bookNameLabel);
         bookNameField = new JTextField();
+        bookNameField.setFont(getFont().deriveFont(Font.PLAIN, 25));
         createBookPanel.add(bookNameField);
-
-        createBookPanel.add(new JLabel("Author Names:"));
+//
+        authorNameLabel = new JLabel("Author Names:"); 
+        authorNameLabel.setFont(getFont().deriveFont(Font.BOLD,25));
+        createBookPanel.add(authorNameLabel);
         authorNamesField = new JTextField();
+        authorNamesField.setFont(getFont().deriveFont(Font.PLAIN, 25));
         createBookPanel.add(authorNamesField);
 
-        createBookPanel.add(new JLabel("Publication:"));
+        publicationLabel = new JLabel("Publication:"); 
+        publicationLabel.setFont(getFont().deriveFont(Font.BOLD,25));
+        createBookPanel.add(publicationLabel);
         publicationField = new JTextField();
+        publicationField.setFont(getFont().deriveFont(Font.PLAIN, 25));
         createBookPanel.add(publicationField);
 
-        createBookPanel.add(new JLabel("Date of Publication:"));
+        dateOfPublicationLabel = new JLabel("Date of Publication:"); 
+        dateOfPublicationLabel.setFont(getFont().deriveFont(Font.BOLD,25));
+        createBookPanel.add(dateOfPublicationLabel);
         dateOfPublicationField = new JTextField();
+        dateOfPublicationField.setFont(getFont().deriveFont(Font.PLAIN,25));
         createBookPanel.add(dateOfPublicationField);
 
-        createBookPanel.add(new JLabel("Price of Book:"));
+        priceOfBookLabel = new JLabel("Price of Book:"); 
+        priceOfBookLabel.setFont(getFont().deriveFont(Font.BOLD,25));
+        createBookPanel.add(priceOfBookLabel);
         priceOfBookField = new JTextField();
+        priceOfBookField.setFont(getFont().deriveFont(Font.PLAIN, 25));
         createBookPanel.add(priceOfBookField);
 
-        createBookPanel.add(new JLabel("Total Quantity to Order:"));
+        totalQuantityLabel = new JLabel("Total Quantity to Order:"); 
+        totalQuantityLabel.setFont(getFont().deriveFont(Font.BOLD,25));
+        createBookPanel.add(totalQuantityLabel);
         totalQuantityField = new JTextField();
+        totalQuantityField.setFont(getFont().deriveFont(Font.PLAIN, 25));
         createBookPanel.add(totalQuantityField);
 
         JButton saveButton = new JButton("Save");
+        saveButton.setBackground(Color.GREEN);
+        saveButton.setFont(getFont().deriveFont(Font.BOLD,25));
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,16 +121,19 @@ public class BookStoreGUI extends JFrame {
 
         createBookPanel.add(saveButton);
         tabbedPane.addTab("Create Book", createBookPanel);
+        tabbedPane.setBackground(Color.CYAN);
     }
 
     private void readBookGUI() {
-        JPanel displayPanel = new JPanel(new GridLayout(5, 1));
+        JPanel displayPanel = new JPanel(new GridLayout(5,2,10,10));
 
         searchField = new JTextField("Search for books 🔎");
         searchField.setFont(searchField.getFont().deriveFont(Font.PLAIN, 35));
         displayPanel.add(searchField);
-
+        
         JButton searchButton = new JButton("Search");
+        searchButton.setFont(getFont().deriveFont(Font.BOLD,25));
+        searchButton.setBackground(Color.LIGHT_GRAY);
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,10 +146,15 @@ public class BookStoreGUI extends JFrame {
         displayPanel.add(searchButton);
 
         table = new JTable(tableModel);
+        table.setSize(100, 100);
+        table.setFont(getFont().deriveFont(Font.PLAIN,19));
+        table.setRowHeight(70);
         JScrollPane tableScrollPane = new JScrollPane(table);
         displayPanel.add(tableScrollPane);
 
         JButton deleteButton = new JButton("Delete");
+        deleteButton.setFont(getFont().deriveFont(Font.BOLD,25));
+        deleteButton.setBackground(Color.RED);
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -140,12 +174,19 @@ public class BookStoreGUI extends JFrame {
 
 
         JButton editButton = new JButton("Edit");
+        editButton.setFont(getFont().deriveFont(Font.BOLD,25));
+        editButton.setBackground(Color.BLUE);
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (table.getSelectedRow() == -1) {
+                    showDialog("Please select a row to edit");
+                    return;
+                }
                 bookToEdit = db.booksCollection.get((table.getSelectedRow()));
                 tabbedPane.setSelectedIndex(0);
                 bookIdField.setText(String.valueOf(bookToEdit.bookId));
+                bookIdField.setEditable(false);
                 bookNameField.setText(bookToEdit.bookName);
                 authorNamesField.setText(bookToEdit.authorNames);
                 publicationField.setText(bookToEdit.publication);
@@ -157,6 +198,7 @@ public class BookStoreGUI extends JFrame {
         displayPanel.add(editButton);
 
         tabbedPane.addTab("Display Books", displayPanel);
+        tabbedPane.setBackground(Color.CYAN);
     }
 
     private void showDialog(String message) {
