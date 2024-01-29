@@ -12,9 +12,12 @@ public class BookStoreGUI extends JFrame {
     private JTextField bookIdField, bookNameField, authorNamesField, publicationField, dateOfPublicationField,
             priceOfBookField, totalQuantityField, searchField;
     private JTabbedPane tabbedPane = new JTabbedPane();
+    private JTable table;
 
     BookTableModel tableModel;
     Database db;
+
+    Book bookToEdit;
 
     public BookStoreGUI(Database db) {
         this.db = db;
@@ -78,8 +81,13 @@ public class BookStoreGUI extends JFrame {
                         Double.parseDouble(priceOfBookField.getText()),
                         Integer.parseInt(totalQuantityField.getText()));
 
-                db.createBook(newBook);
-                showDialog("Book saved successfully!");
+                if (bookToEdit != null) {
+                    db.updateBook(table.getSelectedRow(), newBook);
+                    showDialog("Book updated successfully!");
+                } else {
+                    db.createBook(newBook);
+                    showDialog("Book saved successfully!");
+                }
                 clearInputFields();
                 tableModel.setData(db.booksCollection);
             }
@@ -108,7 +116,7 @@ public class BookStoreGUI extends JFrame {
         });
         displayPanel.add(searchButton);
 
-        JTable table = new JTable(tableModel);
+        table = new JTable(tableModel);
         JScrollPane tableScrollPane = new JScrollPane(table);
         displayPanel.add(tableScrollPane);
 
@@ -131,11 +139,19 @@ public class BookStoreGUI extends JFrame {
         displayPanel.add(deleteButton);
 
 
-        JButton editButton = new JButton("Save");
+        JButton editButton = new JButton("Edit");
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(db.booksCollection.get(0).bookName);
+                bookToEdit = db.booksCollection.get((table.getSelectedRow()));
+                tabbedPane.setSelectedIndex(0);
+                bookIdField.setText(String.valueOf(bookToEdit.bookId));
+                bookNameField.setText(bookToEdit.bookName);
+                authorNamesField.setText(bookToEdit.authorNames);
+                publicationField.setText(bookToEdit.publication);
+                dateOfPublicationField.setText(bookToEdit.dateOfPublication);
+                priceOfBookField.setText(String.valueOf(bookToEdit.priceOfBook));
+                totalQuantityField.setText(String.valueOf(bookToEdit.totalQuantityToOrder));
             }
         });
         displayPanel.add(editButton);
@@ -155,5 +171,6 @@ public class BookStoreGUI extends JFrame {
         dateOfPublicationField.setText("");
         priceOfBookField.setText("");
         totalQuantityField.setText("");
+        bookToEdit = null;
     }
 }

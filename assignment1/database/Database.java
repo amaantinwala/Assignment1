@@ -37,4 +37,9 @@ public class Database {
         booksCollection.remove(index);
         saveBooksCollection();
     }
+
+    public void updateBook(int index, Book book) {
+        booksCollection.set(index, book);
+        saveBooksCollection();
+    }
 }
