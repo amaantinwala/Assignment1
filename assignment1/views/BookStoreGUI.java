@@ -13,10 +13,12 @@ public class BookStoreGUI extends JFrame {
             priceOfBookField, totalQuantityField, searchField;
     private JTabbedPane tabbedPane = new JTabbedPane();
 
+    BookTableModel tableModel;
     Database db;
 
     public BookStoreGUI(Database db) {
         this.db = db;
+        tableModel = new BookTableModel(db.booksCollection);
 
         setTitle("Book Store");
         setSize(900, 700);
@@ -76,9 +78,10 @@ public class BookStoreGUI extends JFrame {
                         Double.parseDouble(priceOfBookField.getText()),
                         Integer.parseInt(totalQuantityField.getText()));
 
-                db.saveBook(newBook);
+                db.createBook(newBook);
                 showDialog("Book saved successfully!");
                 clearInputFields();
+                tableModel.setData(db.booksCollection);
             }
         });
 
@@ -87,19 +90,16 @@ public class BookStoreGUI extends JFrame {
     }
 
     private void readBookGUI() {
-        JPanel displayPanel = new JPanel(new GridLayout(4, 1));
+        JPanel displayPanel = new JPanel(new GridLayout(5, 1));
 
         searchField = new JTextField("Search for books 🔎");
         searchField.setFont(searchField.getFont().deriveFont(Font.PLAIN, 35));
         displayPanel.add(searchField);
 
-        BookTableModel tableModel = new BookTableModel(db.booksCollection);
-
         JButton searchButton = new JButton("Search");
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(searchField.getText());
                 String searchString = searchField.getText().toLowerCase();
                 java.util.List<Book> filteredBooksCollection = db.booksCollection.stream()
                         .filter(book -> book.matchesSearch(searchString)).collect(Collectors.toList());
@@ -111,6 +111,34 @@ public class BookStoreGUI extends JFrame {
         JTable table = new JTable(tableModel);
         JScrollPane tableScrollPane = new JScrollPane(table);
         displayPanel.add(tableScrollPane);
+
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRowIndex = table.getSelectedRow();
+                if (selectedRowIndex == -1) {
+                    showDialog("Please select a row to delete");
+                    return;
+                }
+
+                Book bookToBeDeleted = db.booksCollection.get(selectedRowIndex);
+                db.deleteBook(selectedRowIndex);
+                showDialog(bookToBeDeleted.bookName + " successfully deleted.");
+                tableModel.setData(db.booksCollection);
+            }
+        });
+        displayPanel.add(deleteButton);
+
+
+        JButton editButton = new JButton("Save");
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(db.booksCollection.get(0).bookName);
+            }
+        });
+        displayPanel.add(editButton);
 
         tabbedPane.addTab("Display Books", displayPanel);
     }

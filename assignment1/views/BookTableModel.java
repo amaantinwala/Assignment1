@@ -59,12 +59,4 @@ public class BookTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         return columnNames[column];
     }
-
-    // @Override
-    // public Class<?> getColumnClass(int columnIndex) {
-    //     if (columnIndex == 8 || columnIndex == 9)
-    //         return JButton.class;
-
-    //     return String.class;
-    // }
 }

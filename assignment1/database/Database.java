@@ -19,13 +19,22 @@ public class Database {
         }
     }
 
-    public void saveBook(Book newBook) {
+    public void saveBooksCollection() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Books.dat"))) {
-            booksCollection.add(newBook);
             oos.writeObject(booksCollection);
             oos.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void createBook(Book newBook) {
+        booksCollection.add(newBook);
+        saveBooksCollection();
+    }
+
+    public void deleteBook(int index) {
+        booksCollection.remove(index);
+        saveBooksCollection();
     }
 }
