@@ -29,7 +29,7 @@ public class Book implements Serializable {
     }
 
     public boolean matchesSearch(String query) {
-        if (bookName.toLowerCase().contains(query))
+        if (bookName.toLowerCase().contains(query)||String.valueOf(bookId).contains(query)||authorNames.toLowerCase().contains(query)||publication.toLowerCase().contains(query))
             return true;
 
         return false;
