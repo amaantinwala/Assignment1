@@ -1,17 +1,14 @@
 package assignment1.views;
 
 import java.util.List;
-import javax.swing.*;
 import javax.swing.table.*;
-import java.awt.*;
-import java.awt.event.*;
 
 import assignment1.models.Book;
 
 public class BookTableModel extends AbstractTableModel {
     private List<Book> data;
     private String[] columnNames = { "ID", "Name", "Authors", "Publication", "Publication Date", "Price", "Quantity",
-            "Total Cost", " ", " " };
+            "Total Cost"};
 
     public void setData(List<Book> data) {
         this.data = data;
@@ -53,10 +50,6 @@ public class BookTableModel extends AbstractTableModel {
                 return book.totalQuantityToOrder;
             case 7:
                 return book.totalCost;
-            case 8:
-                return "Edit 🖊️";
-            case 9:
-                return "Delete 🗑️";
             default:
                 return null;
         }
@@ -67,30 +60,11 @@ public class BookTableModel extends AbstractTableModel {
         return columnNames[column];
     }
 
-    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == 8 || columnIndex == 9)
-            return JButton.class;
+    // @Override
+    // public Class<?> getColumnClass(int columnIndex) {
+    //     if (columnIndex == 8 || columnIndex == 9)
+    //         return JButton.class;
 
-        return String.class;
-    }
-}
-
-class ButtonRenderer extends JButton implements TableCellRenderer, ActionListener {
-    public ButtonRenderer() {
-        setOpaque(true);
-        addActionListener(this);
-    }
-
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-            boolean hasFocus, int row, int column) {
-        setText((value == null) ? "" : value.toString());
-        return this;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("Clicked");
-    }
+    //     return String.class;
+    // }
 }
