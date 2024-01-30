@@ -41,7 +41,7 @@ public class BookStoreGUI extends JFrame {
     }
 
     private void createBookPanelGUI() {
-        JPanel createBookPanel = new JPanel(new GridLayout(9,2,10,10));
+        JPanel createBookPanel = new JPanel(new GridLayout(8,2,10,10));
 
         bookIdLabel = new JLabel("Book ID:"); 
         bookIdLabel.setFont(getFont().deriveFont(Font.BOLD,25));
